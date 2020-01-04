@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>hexo发布文章后categories和tags页面仍为空解决方法</title>
+    <url>/2020/01/03/hexo%E5%8F%91%E5%B8%83%E6%96%87%E7%AB%A0%E5%90%8Ecategories%E5%92%8Ctags%E9%A1%B5%E9%9D%A2%E4%BB%8D%E4%B8%BA%E7%A9%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>hexo发布文章后categories和tags页面仍为空。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>打开themes/ocean/layout/_partial/article.ejs（不同的主题可以略有不同，找到article.ejs即可）</p>
+<p>在<code>&lt;div class=&quot;article-entry&quot; itemprop=&quot;articleBody&quot;&gt;</code>的div内添加代码：</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (page.type === <span class="string">"tags"</span>) &#123; %&gt;</span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"tag-cloud"</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"tag-cloud-title"</span>&gt;</span><br><span class="line">    &lt;%- <span class="string">"TOTAl : "</span> + site.tags.length %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"tag-cloud-tags"</span>&gt;</span><br><span class="line">    &lt;%- tagcloud(&#123;</span><br><span class="line">      min_font: <span class="number">12</span>,</span><br><span class="line">      max_font: <span class="number">30</span>,</span><br><span class="line">      amount: <span class="number">200</span>,</span><br><span class="line">      color: <span class="keyword">true</span>,</span><br><span class="line">      start_color: <span class="string">'#555'</span>,</span><br><span class="line">      end_color: <span class="string">'#111'</span></span><br><span class="line">      &#125;) %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"> </span><br><span class="line">  &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (page.type === <span class="string">'categories'</span>) &#123; %&gt;</span><br><span class="line"> </span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"category-all-page"</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"category-all-title"</span>&gt;</span><br><span class="line">    &lt;%- <span class="string">"TOTAL : "</span> + site.categories.length %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"category-all"</span>&gt;</span><br><span class="line">    &lt;%- list_categories() %&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"> </span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以正常显示了。</p>
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>hello</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/01/02/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>hello</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+</search>
