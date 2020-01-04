@@ -9,7 +9,7 @@
 <p>问题出在GitHub Application的申请，之前由于没有绑定自定义域名，所以在申请Github Application的时候我们所填的域名就是 *.github.io , 但是如果自定义了域名的话回调URL要填写自定义域名，否则就会出现上述无法登录的情况。</p>
 <p>然后我发现自己找不到之前所申请的记录了，于是又重新申请了一次，信息如下所示：</p>
 <p><img src="https://i.loli.net/2020/01/04/dAbZ3WOgvGcmjDu.jpg" alt="捕获.JPG"></p>
-<p>注意最后Authorization callback URL中域名的填写，这里还要注意协议时http还是https。</p>
+<p>注意最后Authorization callback URL中域名的填写，这里还要注意协议是http还是https。</p>
 ]]></content>
       <categories>
         <category>环境配置</category>
@@ -17,12 +17,6 @@
       <tags>
         <tag>hexo</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/01/04/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
   </entry>
   <entry>
     <title>hexo发布文章后categories和tags页面仍为空解决方法</title>
@@ -36,31 +30,6 @@
 ]]></content>
       <categories>
         <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>hello</tag>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/01/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>web前端</category>
       </categories>
       <tags>
         <tag>hello</tag>
