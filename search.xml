@@ -3,7 +3,9 @@
   <entry>
     <title>hexo绑定域名后评论功能出错</title>
     <url>/2020/01/04/hexo%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D%E5%90%8E%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E5%87%BA%E9%94%99/</url>
-    <content><![CDATA[<p>昨天刚刚搞了很久才搞定的评论，今天在绑定域名之后发现登录账户时页面会跳转至博客首页，导致无法登录。</p>
+    <content><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=26092806&auto=1&height=66"></iframe>
+
+<p>昨天刚刚搞了很久才搞定的评论，今天在绑定域名之后发现登录账户时页面会跳转至博客首页，导致无法登录。</p>
 <p>在网上发现了别人也出现了相同的问题，所以记录一下，免得下次更换域名后又不知道该怎么解决了。</p>
 <p>本文参考了<a href="https://www.cnblogs.com/zmj97/p/10421872.html。" target="_blank" rel="noopener">https://www.cnblogs.com/zmj97/p/10421872.html。</a></p>
 <p>问题出在GitHub Application的申请，之前由于没有绑定自定义域名，所以在申请Github Application的时候我们所填的域名就是 *.github.io , 但是如果自定义了域名的话回调URL要填写自定义域名，否则就会出现上述无法登录的情况。</p>
