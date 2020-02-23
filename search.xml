@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>PAT-1003 Emergency(最短路路径数)</title>
+    <url>/2020/02/23/PAT-1003%20Emergency(%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%B7%AF%E5%BE%84%E6%95%B0)/</url>
+    <content><![CDATA[<p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376" target="_blank" rel="noopener">https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376</a></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>作为一个城市的紧急救援队队长，你有一份特殊的国家地图。这张地图显示了由一些道路连接起来的几个分散的城市。地图上标明了每个城市的救援队数量和每对城市之间的道路长度。当从其他城市接到紧急电话时，你的工作就是尽快把你的人带到那个地方，同时在路上尽可能多地召集人手。</p>
+<p>给出起点和终点，计算出从起点到终点的最短路路径数，以及能召集到的最多的人手。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先要满足的条件是最短路，在最短路的基础上，再去计算能召集到的最多的人手。</p>
+<p>这题可以套用Dijkstra算法，只需在距离更新的时候做些许修改。</p>
+<p>cnt[v]记录v城市的救援队数量，sum[v]记录起点到v城市的最短路径数量，而num[v]记录起点到v城市所能召集的最多人手。</p>
+<p>1)  根据题意，优先考虑距离，d[u] + w &lt; d[v] </p>
+<p>此时需要更新起点到v城市的最短距离，那么起点到v城市的最短路径数量更新为sum[v] = sum[u]，能召集到的人手数为num[u] + cnt[v]</p>
+<p>2) d[u] + w = d[v]</p>
+<p>此时意味着从起点到v又多了一条最短路径， 那么起点到v城市的最短路径数量更新为sum[v] += sum[u]，能召集到的人手数为max(num[v], num[u] + cnt[v])</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">500</span>+<span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; pii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m, c1, c2;</span><br><span class="line"><span class="keyword">int</span> cnt[maxn], vis[maxn], d[maxn];</span><br><span class="line"><span class="keyword">int</span> num[maxn], sum[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;pii&gt; g[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) d[i] = inf;</span><br><span class="line">    d[c1] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="built_in">memset</span>(num, <span class="number">0</span>, <span class="keyword">sizeof</span>(num));</span><br><span class="line">    <span class="built_in">memset</span>(sum, <span class="number">0</span>, <span class="keyword">sizeof</span>(sum));</span><br><span class="line">    num[c1] = cnt[c1];</span><br><span class="line">    sum[c1] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> mi = inf;</span><br><span class="line">        <span class="keyword">int</span> u = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j] &amp;&amp; d[j]&lt;mi)&#123;</span><br><span class="line">                mi = d[j];</span><br><span class="line">                u = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(u == <span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">        vis[u] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;g[u].<span class="built_in">size</span>();j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> v = g[u][j].first;</span><br><span class="line">            <span class="keyword">int</span> w = g[u][j].second;</span><br><span class="line">            <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w &lt; d[v])&#123;</span><br><span class="line">                d[v] = d[u] + w;</span><br><span class="line">                num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] = sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w == d[v])&#123;</span><br><span class="line">                <span class="keyword">if</span>(num[u] + cnt[v] &gt; num[v])  num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] += sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//freopen("in.txt", "r", stdin);</span></span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d%d%d"</span>, &amp;n, &amp;m, &amp;c1, &amp;c2))&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  g[i].<span class="built_in">clear</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;cnt[i]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> u,v,w;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;u, &amp;v, &amp;w);</span><br><span class="line">            g[u].push_back(make_pair(v, w));</span><br><span class="line">            g[v].push_back(make_pair(u, w));</span><br><span class="line">        &#125;</span><br><span class="line">        dijkstra();</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, sum[c2], num[c2]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>最短路</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>梯度下降：Python和Tensorflow实现</title>
+    <url>/2020/01/07/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%9APython%E5%92%8CTensorflow%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2020/01/07/iFz9yT7rjac3Zhb.png" alt="20181108111104813.png"></p>
+<p>在这当中TensorFlow是非常强大的框架，所以我要好好学习并掌握它。</p>
+<p>一开始就以梯度下降为例熟悉一下吧。</p>
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>考虑一个实际问题，某城市在 2013 年 - 2017 年的房价如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">年份</th>
+<th align="center">2013</th>
+<th align="center">2014</th>
+<th align="center">2015</th>
+<th align="center">2016</th>
+<th align="center">2017</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>房价</strong></td>
+<td align="center"><strong>12000</strong></td>
+<td align="center"><strong>14000</strong></td>
+<td align="center"><strong>15000</strong></td>
+<td align="center"><strong>16500</strong></td>
+<td align="center"><strong>17500</strong></td>
+</tr>
+</tbody></table>
+<p>现在我们希望能求得线性模型<br>$$<br>y ={θ<em>{1}}x+{θ</em>{0}}<br>$$<br>拟合上述数据，我们使用梯度下降算法来求解这两个参数。</p>
+<p>‘</p>
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>简单介绍一下梯度下降。</p>
+<p><img src="https://i.loli.net/2020/01/07/MhaZViTI4S6WKNr.jpg" alt="捕获.JPG"></p>
+<p>图中alpha是学习率，后面是对代价函数求偏导。具体而言就是：</p>
+<p><img src="https://i.loli.net/2020/01/07/Af4klWY2sDUMNqg.jpg" alt="捕获.JPG"></p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X_raw = np.array([<span class="number">2013</span>, <span class="number">2014</span>, <span class="number">2015</span>, <span class="number">2016</span>, <span class="number">2017</span>], dtype=np.float32)</span><br><span class="line">y_raw = np.array([<span class="number">12000</span>, <span class="number">14000</span>, <span class="number">15000</span>, <span class="number">16500</span>, <span class="number">17500</span>], dtype=np.float32)</span><br><span class="line">sample_num = X_raw.shape[<span class="number">0</span>]   <span class="comment"># 样本数量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''Min-Max Normalization'''</span></span><br><span class="line">X = (X_raw - X_raw.min()) / (X_raw.max() - X_raw.min())</span><br><span class="line">y = (y_raw - y_raw.min()) / (y_raw.max() - y_raw.min())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">θ<span class="number">0</span>, θ<span class="number">1</span> = <span class="number">0</span>, <span class="number">0</span>   <span class="comment"># 从0开始</span></span><br><span class="line"></span><br><span class="line">num_epoch = <span class="number">100000</span></span><br><span class="line">learning_rate = <span class="number">1e-3</span>    <span class="comment"># 学习率</span></span><br><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> range(num_epoch):</span><br><span class="line">    y_pred = θ<span class="number">1</span> * X + θ<span class="number">0</span></span><br><span class="line">    grad_θ<span class="number">1</span>, grad_θ<span class="number">0</span> = (y_pred - y).dot(X) / sample_num, (y_pred - y).sum() / sample_num   <span class="comment"># 计算梯度</span></span><br><span class="line">    θ<span class="number">1</span>, θ<span class="number">0</span> = θ<span class="number">1</span> - learning_rate * grad_θ<span class="number">1</span>, θ<span class="number">0</span> - learning_rate * grad_θ<span class="number">0</span>          <span class="comment"># 更新参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''画出图像'''</span></span><br><span class="line">X_fitting = np.arange(<span class="number">2013</span>, <span class="number">2019</span>, <span class="number">0.01</span>)</span><br><span class="line">y_fitting = (θ<span class="number">1</span> * (X_fitting - X_raw.min()) / (X_raw.max() - X_raw.min()) + θ<span class="number">0</span>) \</span><br><span class="line">            * (y_raw.max() - y_raw.min()) + y_raw.min()</span><br><span class="line"></span><br><span class="line">plt.scatter(X_raw, y_raw)</span><br><span class="line">plt.plot(X_fitting, y_fitting, color=<span class="string">'red'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Year'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'House Prices'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/01/07/iGILV4nyxQhEqMH.jpg" alt="捕获.JPG"></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>梯度下降</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Scikit-learn学习笔记</title>
     <url>/2020/01/06/Scikit-learn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p><img src="https://i.loli.net/2020/01/06/lhU7xiRPI31znON.jpg" alt="timg.jpg"></p>

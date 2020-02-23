@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    PAT-1003 Emergency(最短路路径数) |
+    
+    VortexZhang</title>
+  
+    <link rel="shortcut icon" href="/zhang_favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  
+
+<article id="post-PAT-1003 Emergency(最短路路径数)" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+  
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PAT-1003 Emergency(最短路路径数)
+    </h1>
+  
+  
+
+
+
+
+      </header>
+    
+
+    
+      <div class="article-meta">
+        <a href="/2020/02/23/PAT-1003%20Emergency(%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%B7%AF%E5%BE%84%E6%95%B0)/" class="article-date">
+  <time datetime="2020-02-23T08:00:11.000Z" itemprop="datePublished">2020-02-23</time>
+</a>
+        
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+		&emsp;<i class="fe fe-bar-chart"></i> <span class="post-count">736</span>字
+        &emsp;<i class="fe fe-clock"></i> <span class="post-count">3</span>分钟
+      </div>
+    
+
+    
+      
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+<!--  默认内容显示方式
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+	  <p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376" target="_blank" rel="noopener">https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376</a></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>作为一个城市的紧急救援队队长，你有一份特殊的国家地图。这张地图显示了由一些道路连接起来的几个分散的城市。地图上标明了每个城市的救援队数量和每对城市之间的道路长度。当从其他城市接到紧急电话时，你的工作就是尽快把你的人带到那个地方，同时在路上尽可能多地召集人手。</p>
+<p>给出起点和终点，计算出从起点到终点的最短路路径数，以及能召集到的最多的人手。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先要满足的条件是最短路，在最短路的基础上，再去计算能召集到的最多的人手。</p>
+<p>这题可以套用Dijkstra算法，只需在距离更新的时候做些许修改。</p>
+<p>cnt[v]记录v城市的救援队数量，sum[v]记录起点到v城市的最短路径数量，而num[v]记录起点到v城市所能召集的最多人手。</p>
+<p>1)  根据题意，优先考虑距离，d[u] + w &lt; d[v] </p>
+<p>此时需要更新起点到v城市的最短距离，那么起点到v城市的最短路径数量更新为sum[v] = sum[u]，能召集到的人手数为num[u] + cnt[v]</p>
+<p>2) d[u] + w = d[v]</p>
+<p>此时意味着从起点到v又多了一条最短路径， 那么起点到v城市的最短路径数量更新为sum[v] += sum[u]，能召集到的人手数为max(num[v], num[u] + cnt[v])</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">500</span>+<span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; pii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m, c1, c2;</span><br><span class="line"><span class="keyword">int</span> cnt[maxn], vis[maxn], d[maxn];</span><br><span class="line"><span class="keyword">int</span> num[maxn], sum[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;pii&gt; g[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) d[i] = inf;</span><br><span class="line">    d[c1] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="built_in">memset</span>(num, <span class="number">0</span>, <span class="keyword">sizeof</span>(num));</span><br><span class="line">    <span class="built_in">memset</span>(sum, <span class="number">0</span>, <span class="keyword">sizeof</span>(sum));</span><br><span class="line">    num[c1] = cnt[c1];</span><br><span class="line">    sum[c1] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> mi = inf;</span><br><span class="line">        <span class="keyword">int</span> u = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j] &amp;&amp; d[j]&lt;mi)&#123;</span><br><span class="line">                mi = d[j];</span><br><span class="line">                u = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(u == <span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">        vis[u] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;g[u].<span class="built_in">size</span>();j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> v = g[u][j].first;</span><br><span class="line">            <span class="keyword">int</span> w = g[u][j].second;</span><br><span class="line">            <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w &lt; d[v])&#123;</span><br><span class="line">                d[v] = d[u] + w;</span><br><span class="line">                num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] = sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w == d[v])&#123;</span><br><span class="line">                <span class="keyword">if</span>(num[u] + cnt[v] &gt; num[v])  num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] += sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//freopen("in.txt", "r", stdin);</span></span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d%d%d"</span>, &amp;n, &amp;m, &amp;c1, &amp;c2))&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  g[i].<span class="built_in">clear</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;cnt[i]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> u,v,w;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;u, &amp;v, &amp;w);</span><br><span class="line">            g[u].push_back(make_pair(v, w));</span><br><span class="line">            g[v].push_back(make_pair(u, w));</span><br><span class="line">        &#125;</span><br><span class="line">        dijkstra();</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, sum[c2], num[c2]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/23/PAT-1003%20Emergency(%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%B7%AF%E5%BE%84%E6%95%B0)/" data-id="ck6yrkq7y0000ogjd6g80d90o"
+         class="article-share-link">Share</a>
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li></ul>
+
+    </footer>
+	  </div>
+-->
+
+<!--设置自动显示阅读全文-->
+<div class="article-entry" itemprop="articleBody">
+
+  
+    
+    
+      <p><a href="https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376" target="_blank" rel="noopener">https://pintia.cn/problem-sets/994805342720868352/problems/994805523835109376</a></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>作为一个城市的紧急救援队队长，你有一份特殊的国家地图。这张地图显示了由一些道路连接起来的几个分散的城市。地图上标明了每个城市的救援队数量和每对城市之间的道路长度。当从其他城市接到紧急电话时，你的工作就是尽快把你的人带到那个地方，同时在路上尽可能多地召集人手。</p>
+<p>给出起点和终点，计算出从起点到终点的最短路路径数，以及能召集到的最多的人手。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先要满足的条件是最短路，在最短路的基础上，再去计算能召集到的最多的人手。</p>
+<p>这题可以套用Dijkstra算法，只需在距离更新的时候做些许修改。</p>
+<p>cnt[v]记录v城市的救援队数量，sum[v]记录起点到v城市的最短路径数量，而num[v]记录起点到v城市所能召集的最多人手。</p>
+<p>1)  根据题意，优先考虑距离，d[u] + w &lt; d[v] </p>
+<p>此时需要更新起点到v城市的最短距离，那么起点到v城市的最短路径数量更新为sum[v] = sum[u]，能召集到的人手数为num[u] + cnt[v]</p>
+<p>2) d[u] + w = d[v]</p>
+<p>此时意味着从起点到v又多了一条最短路径， 那么起点到v城市的最短路径数量更新为sum[v] += sum[u]，能召集到的人手数为max(num[v], num[u] + cnt[v])</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">500</span>+<span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> inf = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; pii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, m, c1, c2;</span><br><span class="line"><span class="keyword">int</span> cnt[maxn], vis[maxn], d[maxn];</span><br><span class="line"><span class="keyword">int</span> num[maxn], sum[maxn];</span><br><span class="line"><span class="built_in">vector</span>&lt;pii&gt; g[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) d[i] = inf;</span><br><span class="line">    d[c1] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="built_in">memset</span>(num, <span class="number">0</span>, <span class="keyword">sizeof</span>(num));</span><br><span class="line">    <span class="built_in">memset</span>(sum, <span class="number">0</span>, <span class="keyword">sizeof</span>(sum));</span><br><span class="line">    num[c1] = cnt[c1];</span><br><span class="line">    sum[c1] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> mi = inf;</span><br><span class="line">        <span class="keyword">int</span> u = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j] &amp;&amp; d[j]&lt;mi)&#123;</span><br><span class="line">                mi = d[j];</span><br><span class="line">                u = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(u == <span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">        vis[u] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;g[u].<span class="built_in">size</span>();j++)&#123;</span><br><span class="line">            <span class="keyword">int</span> v = g[u][j].first;</span><br><span class="line">            <span class="keyword">int</span> w = g[u][j].second;</span><br><span class="line">            <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w &lt; d[v])&#123;</span><br><span class="line">                d[v] = d[u] + w;</span><br><span class="line">                num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] = sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(!vis[v] &amp;&amp; d[u] + w == d[v])&#123;</span><br><span class="line">                <span class="keyword">if</span>(num[u] + cnt[v] &gt; num[v])  num[v] = num[u] + cnt[v];</span><br><span class="line">                sum[v] += sum[u];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//freopen("in.txt", "r", stdin);</span></span><br><span class="line">    <span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">"%d%d%d%d"</span>, &amp;n, &amp;m, &amp;c1, &amp;c2))&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  g[i].<span class="built_in">clear</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;cnt[i]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> u,v,w;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;u, &amp;v, &amp;w);</span><br><span class="line">            g[u].push_back(make_pair(v, w));</span><br><span class="line">            g[v].push_back(make_pair(u, w));</span><br><span class="line">        &#125;</span><br><span class="line">        dijkstra();</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, sum[c2], num[c2]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    
+  
+  
+  
+     <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/23/PAT-1003%20Emergency(%E6%9C%80%E7%9F%AD%E8%B7%AF%E8%B7%AF%E5%BE%84%E6%95%B0)/" data-id="ck6yrkq7y0000ogjd6g80d90o"
+         class="article-share-link">Share</a>
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li></ul>
+
+	  
+	<div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束&nbsp;<i class="fe fe-smile"></i>&nbsp;感谢您的阅读 -------------</div>
+
+    </footer>
+  
+  
+  <!--统计标签-->
+  
+  
+
+  
+</div>
+
+
+  
+    
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/01/07/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%9APython%E5%92%8CTensorflow%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">Olde posts</strong>
+        <div class="article-nav-title">梯度下降：Python和Tensorflow实现</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+    
+  <div class="gitalk" id="gitalk-container"></div>
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: 'd07816f710ec06d5f302',
+      clientSecret: '58483486293d074aba3185975c69cf23366c1579',
+      repo: 'blog_comment',
+      owner: 'VortexZhang',
+      admin: ['VortexZhang'],
+      // id: location.pathname,      // Ensure uniqueness and length less than 50
+      id: md5(location.pathname),
+      distractionFreeMode: false,  // Facebook-like distraction free mode
+      pagerDirection: 'last'
+    })
+
+  gitalk.render('gitalk-container')
+  </script>
+
+  
+
+</article>
+
+
+
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i>&nbsp;访客数:&nbsp;<span id="busuanzi_value_site_uv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <!--<li>&copy; 2020 VortexZhang</li>-->
+	  <!--<li>&copy; 2020 VortexZhang</li>-->
+	  
+      <!--<li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>-->
+      <!--<li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean" target="_blank" rel="noopener">Ocean</a></li>-->
+	  
+	  <br>
+	  <br>
+	  <div>
+		<center>博客全站共&ensp;<span class="post-count">2k</span>&ensp;字<center>
+	  </div>
+	  <div>
+         <center><span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("01/03/2020 10:00:00");//此处修改你的建站时间或者网站上线时间 
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days "; 
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s"; 
+    } 
+	setInterval("createtime()",250);
+</script></center>
+      </div>
+    </ul>
+  </div>
+</footer>
+</main>
+
+<aside class="sidebar sidebar-specter">
+  
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/zhang.svg" alt="VortexZhang"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories">Categories</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+  
+<script src="/js/search.js"></script>
+
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>
